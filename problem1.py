@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Load the training data
 training_data = np.loadtxt('handwriting_training_set.txt', delimiter=',')
@@ -40,7 +41,7 @@ def classify_digit(test_vector, k):
     
     for digit in range(10):
         # Get the top k singular vectors as basis for this digit
-        V_k = svd_results[digit]['Vt'][:k, :].T  # Shape: (400, k)
+        V_k = svd_results[digit]['Vt'][:k, :].T  
         
         # Project test vector onto this digit's subspace
         projection = V_k @ (V_k.T @ test_vector)
@@ -59,14 +60,51 @@ k_values = [5, 10, 15, 20]
 
 print("\nClassifying test digits")
 
+# Store accuracy results
+accuracy_results = []
+
 for k in k_values:
     print(f"\nUsing {k} singular vectors:")
     
+    correct = 0
+    total = len(test_data)
+    
     # Classify each test digit
-    for i in range(len(test_data)):
+    for i in range(total):
         test_digit = test_data[i, :]
         predicted = classify_digit(test_digit, k)
-        # Classifications are computed and stored
+        
+        # Get true label
+        true_label = int(test_labels[i])
+        if true_label == 10:
+            true_label = 0
+        
+        if predicted == true_label:
+            correct += 1
     
-    print(f"Classified {len(test_data)} test digits")
+    accuracy = (correct / total) * 100
+    accuracy_results.append(accuracy)
+    print(f"Accuracy: {accuracy:.2f}%")
+
+# Print table
+print("\nAccuracy Results:")
+print("Number of Basis Vectors | Accuracy (%)")
+print("--------------------------------------")
+for k, acc in zip(k_values, accuracy_results):
+    print(f"         {k}            |    {acc:.2f}%")
+
+# Problem Ai
+# Create graph
+plt.figure(figsize=(8, 6))
+plt.plot(k_values, accuracy_results, marker='o', linewidth=2, markersize=8)
+plt.xlabel('Number of Basis Vectors', fontsize=12)
+plt.ylabel('Accuracy (%)', fontsize=12)
+plt.title('Classification Accuracy vs Number of Basis Vectors', fontsize=14)
+plt.grid(True, alpha=0.3)
+plt.xticks(k_values)
+plt.ylim([0, 100])
+for k, acc in zip(k_values, accuracy_results):
+    plt.text(k, acc + 2, f'{acc:.2f}%', ha='center', fontsize=10)
+plt.tight_layout()
+plt.show()
 
