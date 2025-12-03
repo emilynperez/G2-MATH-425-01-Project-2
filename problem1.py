@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # Load the training data
 training_data = np.loadtxt('handwriting_training_set.txt', delimiter=',')
