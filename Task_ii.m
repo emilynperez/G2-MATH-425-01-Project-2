@@ -1,8 +1,5 @@
 # Part II: per-digit accuracy and misclassified examples
 
-import matlab.engine
-
-
 Xtrain = load("handwriting_training_set.txt");
 ytrain = load("handwriting_training_set_labels.txt");
 Xtest  = load("handwriting_test_set.txt");
