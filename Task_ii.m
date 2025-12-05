@@ -1,11 +1,14 @@
-% Part II: per-digit accuracy and misclassified examples
+# Part II: per-digit accuracy and misclassified examples
+
+import matlab.engine
+
 
 Xtrain = load("handwriting_training_set.txt");
 ytrain = load("handwriting_training_set_labels.txt");
 Xtest  = load("handwriting_test_set.txt");
 ytest  = load("handwriting_test_set_labels_for_Python.txt");
-% y_pred must be produced by your classifier.
-% Option 1: it was saved to a file y_pred.mat
+# y_pred must be produced by your classifier.
+# Option 1: it was saved to a file y_pred.mat
 load("y_pred.mat");   % this file should contain a vector y_pred
 
 if ~exist("y_pred","var")
