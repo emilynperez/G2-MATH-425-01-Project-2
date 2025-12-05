@@ -17,6 +17,10 @@ python problemAB_Task_i.py
 
 ### Problem A Task II & Task III (`Task_ii.m & Task_iii.py`)
 ###  (`Task_ii.m`)
+- Task ii go to the matlab website (https://www.mathworks.com/products/matlab.html)
+- Install Matlab
+- Run the code in either the dedicated IDE or run in the Website
+
 ###  (`Task_iii.py`)
 ```bash
 python Task_iii.py
