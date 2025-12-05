@@ -18,6 +18,9 @@ python problemAB_Task_i.py
 ### Problem A Task II & Task III (`Task_ii.m & Task_iii.py`)
 ###  (`Task_ii.m`)
 ###  (`Task_iii.py`)
+```bash
+python Task_iii.py
+```
 
 ## Contributions
 
