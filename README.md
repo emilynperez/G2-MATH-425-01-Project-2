@@ -4,7 +4,7 @@
 
 Install the required Python libraries:
 ```bash
-pip install numpy matplotlib pandas
+pip install numpy matplotlib pandas tabulate
 ```
 
 ## How to run Part A
