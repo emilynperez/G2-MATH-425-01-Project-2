@@ -111,30 +111,88 @@ plt.show()
 
 # Problem B
 
+# From Project 2 Instructions
+# If for one class/digit the residual is significantly 
+# smaller than for the others, classify as that digit.
+
+# Our digit_limit is what we'll be using to check if it's
+# significantly smaller than the others
+
+# Note the bigger the number the more likely it will always
+# Use Stage 2 which is why we use 1.2 instead of 2.0 or 1.5
+# At 30 For example it will use it 100% of the time
 digit_limit = 1.2
 
 def classify_two_stage_digit(test_vector):
+    # Stage 1
 
+    # The Logic behind Quick Check having k_stage_1 = 0
+    # and using reShape -1,1 is that we want only
+    # 1 Vector as we are expected to compare an
+    # unknown digit to the singular vector
     k_stage_1 = 0
     distances_b = {}
 
+    # This section is very similar to Problem 1A/Step 2 of
+    # our alogirthm and was previously explained by
+    # one of my teammates
     for digit in range(10):
         
+        # This gets our singular vector that we'll be using
+        # and is similar to Problem 1A, but we only want
+        # a single vector
         VectorOne = svd_results[digit]['Vt'][k_stage_1, :].reshape(-1, 1)
+        
+        # The Logic here is that because we are getting a singular vector
+        # It's going to be a Bigger Number Than One x 1 Matrix
+
+        # Becase we want to be able to project it we need to be able to
+        # use it like a matrix when projecting, but because unlike
+        # Problem A if we don't reshape it, would encounter an error for projecting 
+        # as it would state there's not enough dimenions so doing reshape
+        # guarantees that it will be 400x1 or 1x400
+        
         reshaped_test_vector = test_vector.reshape(-1, 1)
+
+        # This is the projection for stage one
+        # This is the same as v1*(v1.T * x)
+        # The @ is for multiplying Matrixes/Vectors specfically
         proj_stage1 = VectorOne @ (VectorOne.T @ reshaped_test_vector)
+        
+        # Residual/Distance (Same as Problem 1A, but with our values)
         distance_b = np.linalg.norm(reshaped_test_vector - proj_stage1)
+
+        # Problem 1A/Stage 2 checks them one at a time whereas Stage 1 here
+        # We need to check all of them at once so we store it like this
         distances_b[digit] = distance_b
 
     distance_values = list(distances_b.items())
+
+    # Example: ((1,2), (3,3))
+    # This example is just visuals for what the
+    # code is doing they don't have any impact on the code
     starting_values = distance_values[0]
-    best_digit = starting_values[0]
-    minimumDistance = starting_values[1]
+
+    # 1 and 2 don't mean anything they're just examples of what
+    # values we are getting from our distance_values which has the 
+    # list of distance_b items
+    best_digit = starting_values[0] # 1
+    minimumDistance = starting_values[1] # 2
 
     second_minDistance = minimumDistance
     
+    # Logic here is that starting for each digit
+    # and distance inside our current distance list
     for digit, distance in  distance_values[1:]:
 
+        # If our distance is smaller than the minimum
+        # distance it's no longer the minimum, so we 
+        # change the values so that the second_minimum holds the new value
+        # the old one changes to distance
+
+        # Finally we change the best digit because that represents that
+        # in that pair of digit and distance this is the best digit
+        # inside the minimum
         if distance < minimumDistance:
 
             # Store old value
@@ -145,29 +203,41 @@ def classify_two_stage_digit(test_vector):
             best_digit = digit
             
         elif distance < second_minDistance:
-
+            # The Logic here is that for like pair let's say it's smaller than
+            # second_minDistance, but because it's not smalelr than our regular
+            # minimumDistance we don't want to change the regular values of
+            # best minimumDistance and best_digit
             second_minDistance = distance
+    
+    # Question from Instructions
+    # "If for one class/digit the residual is significantly smaller  
+    # than for the others, classify as that digit"
 
     if minimumDistance * digit_limit < second_minDistance:
-
+        # We return the best digit
+        # We also return 1 to mark it as us using Stage 1
         return best_digit, 1 
-
+    
+    # Stage 2
+    # We are stated to "Otherwise use the algorithm above" which is from Problem 1A
+    # We can reuse the classify_digit function from Problem A which does this
     
     if accuracy_results:
-
+    # We use our results from A for Stage 2 of our Two Stage Algorithm
+    # The max_accuracy is getting the highest number 
         max_accuracy = max(accuracy_results)
         max_accuracy_index = accuracy_results.index(max_accuracy)
         max_k_value = k_values[max_accuracy_index]
 
     else:
-      
+        # Default to a high-performing k if A was not run/results are unavailable
         print(f"We are unable to get max_value from Accuracy Result Stage 2")
         SystemExit
 
     predicted_stage_2 = classify_digit(test_vector, max_k_value)
     return predicted_stage_2, 2
 
-# Run Stage Two
+# --- Run the Two-Stage Classification on Test Data ---
 print(f"\n========================================================================================")#
 print(f"\nRunning Two-Stage Algorithm | Problem B\n")
 
@@ -233,5 +303,5 @@ elif bestAccuracy_a > accuracy_b:
 
 #"How frequently is the second stage necessary? From Instructions"
 print(f"\nHow frequently is the second stage necessary? From Instructions")
-print(f"Stage Two was necessary for {stage_two_count} Stages out of {total_b} Tests")
+print(f"Stage Two was necessary for {stage_two_count} Stages out of {total_b} Test Examples")
 
