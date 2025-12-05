@@ -164,8 +164,6 @@ def classify_two_stage_digit(test_vector):
         print(f"We are unable to get max_value from Accuracy Result Stage 2")
         SystemExit
 
-    print(f"{max_k_value} is the Highest Value Of K from Problem 1 This will be used for Stage 2")
-
     predicted_stage_2 = classify_digit(test_vector, max_k_value)
     return predicted_stage_2, 2
 
@@ -235,5 +233,5 @@ elif bestAccuracy_a > accuracy_b:
 
 #"How frequently is the second stage necessary? From Instructions"
 print(f"\nHow frequently is the second stage necessary? From Instructions")
-print(f"Stage Two was necessary for {stage_two_count} Stages out of {total_b} Test Examples")
+print(f"Stage Two was necessary for {stage_two_count} Stages out of {total_b} Tests")
 
