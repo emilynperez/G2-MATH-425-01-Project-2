@@ -9,20 +9,15 @@ pip install numpy matplotlib pandas
 
 ## How to run Part A
 
-### Problem 1 (`problem1.py`)
+### Problem A and Problem B (`problemAB_Task_i.py`)
 
 ```bash
-python problem1.py
+python problemAB_Task_i.py
 ```
 
-### Part II (`partii`)
-
-
-### Problem 3 (`problem3.py`)
-
-```bash
-python problem3.py
-```
+### Problem A Task II & Task III (`Task_ii.m & Task_iii.py`)
+###  (`Task_ii.m`)
+###  (`Task_iii.py`)
 
 ## Contributions
 
