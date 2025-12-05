@@ -237,7 +237,7 @@ def classify_two_stage_digit(test_vector):
     predicted_stage_2 = classify_digit(test_vector, max_k_value)
     return predicted_stage_2, 2
 
-# --- Run the Two-Stage Classification on Test Data ---
+# Run Stage 2
 print(f"\n========================================================================================")#
 print(f"\nRunning Two-Stage Algorithm | Problem B\n")
 
