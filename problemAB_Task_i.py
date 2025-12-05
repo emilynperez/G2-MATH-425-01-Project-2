@@ -111,38 +111,26 @@ plt.show()
 
 # Problem B
 
-# Determine the best k from Problem 1.A results to use in Stage 2.
-# Based on common results, or by finding the max in accuracy_results:
-if accuracy_results:
-    # We use our results from A for Stage 2 of our Two Stage Algorithm
-    # The max_accuracy is getting the highest number 
-    max_accuracy = max(accuracy_results)
-    max_accuracy_index = accuracy_results.index(max_accuracy)
-    max_k_value = k_values[max_accuracy_index]
-
-else:
-    # Default to a high-performing k if A was not run/results are unavailable
-    print(f"We are unable to get max_value from Accuracy Result Stage 2")
-    SystemExit
-
-print(f"{max_k_value} is the Highest Value Of K from Problem 1 This will be used for Stage 2 (Classification)")
-
 # From Project 2 Instructions
 # If for one class/digit the residual is significantly 
 # smaller than for the others, classify as that digit.
 
 # Our digit_limit is what we'll be using to check if it's
 # significantly smaller than the others
-digit_limit = 2.0
+
+# Note the bigger the number the more likely it will always
+# Use Stage 2 which is why we use 1.2 instead of 2.0 or 1.5
+# At 30 For example it will use it 100% of the time
+digit_limit = 1.2
 
 def classify_two_stage_digit(test_vector):
     # Stage 1
 
-    # The Logic behind Quick Check having k_stage_1 = 1
+    # The Logic behind Quick Check having k_stage_1 = 0
     # and using reShape -1,1 is that we want only
     # 1 Vector as we are expected to compare an
     # unknown digit to the singular vector
-    k_stage_1 = 1
+    k_stage_1 = 0
     distances_b = {}
 
     # This section is very similar to Problem 1A/Step 2 of
@@ -153,7 +141,7 @@ def classify_two_stage_digit(test_vector):
         # This gets our singular vector that we'll be using
         # and is similar to Problem 1A, but we only want
         # a single vector
-        VectorOne = svd_results[digit]['Vt'][0, :].reshape(-1, 1)
+        VectorOne = svd_results[digit]['Vt'][k_stage_1, :].reshape(-1, 1)
         
         # The Logic here is that because we are getting a singular vector
         # It's going to be a Bigger Number Than One x 1 Matrix
@@ -233,6 +221,21 @@ def classify_two_stage_digit(test_vector):
     # Stage 2
     # We are stated to "Otherwise use the algorithm above" which is from Problem 1A
     # We can reuse the classify_digit function from Problem A which does this
+    
+    if accuracy_results:
+    # We use our results from A for Stage 2 of our Two Stage Algorithm
+    # The max_accuracy is getting the highest number 
+        max_accuracy = max(accuracy_results)
+        max_accuracy_index = accuracy_results.index(max_accuracy)
+        max_k_value = k_values[max_accuracy_index]
+
+    else:
+        # Default to a high-performing k if A was not run/results are unavailable
+        print(f"We are unable to get max_value from Accuracy Result Stage 2")
+        SystemExit
+
+    print(f"{max_k_value} is the Highest Value Of K from Problem 1 This will be used for Stage 2")
+
     predicted_stage_2 = classify_digit(test_vector, max_k_value)
     return predicted_stage_2, 2
 
@@ -296,9 +299,9 @@ print(f"Best Accuracy from Problem A: {bestAccuracy_a:.2f}%")
 print("\nIs it possible to get as good a result for this version? From Instructions")
 
 if accuracy_b >= bestAccuracy_a:
-    print(f"Yes {accuracy_b:.2f}% had a higher or equal accuracy than Problem 1A which had an accuracy {bestAccuracy_a:.2f}%")
+    print(f"Yes Problem B had a percentage {accuracy_b:.2f}% had a higher or equal accuracy than Problem 1A which had an accuracy {bestAccuracy_a:.2f}%")
 elif bestAccuracy_a > accuracy_b:
-    print(f"No {accuracy_b:.2f}% was is lower accuracy to Problem 1A which had an accuracy of {bestAccuracy_a:.2f}%).")
+    print(f"No Problem B had a percentage {accuracy_b:.2f}% was is lower accuracy to Problem 1A which had an accuracy of {bestAccuracy_a:.2f}%).")
 
 #"How frequently is the second stage necessary? From Instructions"
 print(f"\nHow frequently is the second stage necessary? From Instructions")
